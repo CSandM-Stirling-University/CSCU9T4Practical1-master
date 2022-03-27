@@ -183,6 +183,8 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                     rep = Integer.parseInt(repetitions.getText());
                     rec = Integer.parseInt(recovery.getText());
                     entry = new SprintEntry(n, d, m, y, h, mm, s, km, rep, rec);
+                    outputArea.setText("looking up record ...");
+                        //int cannot be null
                     break;
                 case "swim":
                     wr = where.getText();
@@ -203,7 +205,6 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
             message = "Input error. Insert data again";
         }
         if (n.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Name field must be filled in.\nPlease enter data again");
             message = "Input error. Insert data again";
         }
 
@@ -211,31 +212,29 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
     }
 
     public String lookupEntry() {
-        String message = "Looking up entry";
+        String message;
         String n = "";
         try {
         int m = Integer.parseInt(month.getText());
         int d = Integer.parseInt(day.getText());
         int y = Integer.parseInt(year.getText());
         n = name.getText();
-        outputArea.setText("looking up record ...");
         message = myAthletes.lookupEntry(d, m, y);
     }
         catch (NumberFormatException nfe) {
         System.err.println("Wrong input");
         JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
-        //message = "Input error. Insert data again";
+        message = "Input error. Insert data again";
     }
         if (n.isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Name field must be filled in.\nPlease enter data again");
-        //message = "Input error. Insert data again";
+        message = "Input error. Insert data again";
     }
 
         return message;
     }
 
     public String findAllByDate() {
-        String message = "Finding all entries for this date";
+        String message;
         String n = "";
         try {
             int m = Integer.parseInt(month.getText());
@@ -250,7 +249,6 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
             message = "Input error. Insert data again";
         }
             if (n.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Name field must be filled in.\nPlease enter data again");
                 message = "Input error. Insert data again";
             }
         return message;
@@ -258,11 +256,20 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
     public String remove() {
         String s = name.getText();
-        int m = Integer.parseInt(month.getText());
-        int d = Integer.parseInt(day.getText());
-        int y = Integer.parseInt(year.getText());
-        myAthletes.remove(s, d, m, y);
-        return "Removed";
+        String message;
+        try {
+            int m = Integer.parseInt(month.getText());
+            int d = Integer.parseInt(day.getText());
+            int y = Integer.parseInt(year.getText());
+            myAthletes.remove(s, d, m, y);
+            message = "Entry removed";
+        }
+        catch (NumberFormatException nfe) {
+            System.err.println("Wrong input");
+            JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
+            message = "Input error. Insert data again";
+        }
+        return message;
     }
 
     public void blankDisplay() {

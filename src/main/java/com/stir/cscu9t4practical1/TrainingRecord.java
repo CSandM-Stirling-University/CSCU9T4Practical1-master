@@ -21,6 +21,9 @@ public class TrainingRecord {
         String result = "No entries found";
         while (iter.hasNext()) {
             Entry current = iter.next();
+            //if (current.getClass() == SwimEntry.class) {
+              //  result = ((SwimEntry) current).getSwimEntry();
+            //}
             if (current.getDay() == d && current.getMonth() == m && current.getYear() == y)
                 result = current.getEntry();
         }
