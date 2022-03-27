@@ -13,7 +13,7 @@ public class SwimEntry extends Entry {
     }
 
     public String getSwimEntry () {
-        String result = getName()+" swam " + getDistance() + " km "
+        String result = getName()+" swam " + getDistance() + " km in "
                 + getWhere() + " in "
                 + getHour()+":"+ getMin()+":"+ getSec() + " on "
                 + getDay()+"/"+ getMonth()+"/"+ getYear() + "\n";

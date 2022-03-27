@@ -54,6 +54,9 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         super("Training Record");
         setLayout(new FlowLayout());
 
+        box.addActionListener(this);
+        add(box);
+
         add(labn);
         add(name);
         name.setEditable(true);
@@ -79,9 +82,6 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         add(dist);
         dist.setEditable(true);
 
-        box.addActionListener(this);
-        add(box);
-
         add(labwhere);
         add(where);
         add(labterrain);
@@ -103,7 +103,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         tempo.setEditable(true);
         labrepetitions.setVisible(false);
         repetitions.setVisible(false);
-        repetitions.setEditable(false);
+        repetitions.setEditable(true);
         labrecovery.setVisible(false);
         recovery.setVisible(false);
         recovery.setEditable(true);
@@ -153,9 +153,9 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         blankDisplay();
     } // actionPerformed
 
-    public String addEntry(String what) {
+    public String addEntry(String record) {
         String message = "Record added\n";
-        System.out.println("Adding " + what + " entry to the records");
+        System.out.println("Adding " + record + " entry to the records");
         int m, d, y, h, mm, s, rep, rec;
         float km;
         String n = "", ter = "", tem = "", wr = "";
@@ -169,7 +169,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
             mm = Integer.parseInt(mins.getText());
             s = Integer.parseInt(secs.getText());
             n = name.getText();
-            switch (what) {
+            switch (record) {
                 case "cycle":
                     ter = terrain.getText();
                     tem = tempo.getText();
@@ -184,7 +184,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                     rec = Integer.parseInt(recovery.getText());
                     entry = new SprintEntry(n, d, m, y, h, mm, s, km, rep, rec);
                     outputArea.setText("looking up record ...");
-                        //int cannot be null
+                    //int cannot be null
                     break;
                 case "swim":
                     wr = where.getText();
@@ -198,8 +198,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                     entry = new Entry(n, d, m, y, h, mm, s, km);
             }
             myAthletes.addEntry(entry);
-        }
-        catch (NumberFormatException nfe){
+        } catch (NumberFormatException nfe) {
             System.err.println("Wrong input");
             JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
             message = "Input error. Insert data again";
@@ -215,42 +214,39 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
         String message;
         String n = "";
         try {
-        int m = Integer.parseInt(month.getText());
-        int d = Integer.parseInt(day.getText());
-        int y = Integer.parseInt(year.getText());
-        n = name.getText();
-        message = myAthletes.lookupEntry(d, m, y);
-    }
-        catch (NumberFormatException nfe) {
-        System.err.println("Wrong input");
-        JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
-        message = "Input error. Insert data again";
-    }
+            int m = Integer.parseInt(month.getText());
+            int d = Integer.parseInt(day.getText());
+            int y = Integer.parseInt(year.getText());
+            n = name.getText();
+            message = myAthletes.lookupEntry(d, m, y);
+        } catch (NumberFormatException nfe) {
+            System.err.println("Wrong input");
+            JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
+            message = "Input error. Insert data again";
+        }
         if (n.isEmpty()) {
-        message = "Input error. Insert data again";
-    }
+            message = "Input error. Insert data again";
+        }
 
         return message;
     }
 
     public String findAllByDate() {
         String message;
-        String n = "";
         try {
             int m = Integer.parseInt(month.getText());
             int d = Integer.parseInt(day.getText());
             int y = Integer.parseInt(year.getText());
             outputArea.setText("Not implemented yet ...");
             message = myAthletes.findAllByDate(d, m, y);
-        }
-        catch (NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             System.err.println("Wrong input");
             JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
             message = "Input error. Insert data again";
         }
-            if (n.isEmpty()) {
-                message = "Input error. Insert data again";
-            }
+        if (message.isEmpty()) {
+            message = "Input error. Insert data again";
+        }
         return message;
     }
 
@@ -263,8 +259,7 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
             int y = Integer.parseInt(year.getText());
             myAthletes.remove(s, d, m, y);
             message = "Entry removed";
-        }
-        catch (NumberFormatException nfe) {
+        } catch (NumberFormatException nfe) {
             System.err.println("Wrong input");
             JOptionPane.showMessageDialog(null, "Wrong number format or empty cells.\nPlease enter data again");
             message = "Input error. Insert data again";
@@ -303,32 +298,20 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
 
     public void createGUI(String s) {
         switch (s) {
-            case "cycle":
-                terrain.setVisible(true);
-                labterrain.setVisible(true);
-                tempo.setVisible(true);
-                labtempo.setVisible(true);
+            case "generic":
+                where.setVisible(false);
+                labwhere.setVisible(false);
                 repetitions.setVisible(false);
                 labrepetitions.setVisible(false);
                 recovery.setVisible(false);
                 labrecovery.setVisible(false);
-                where.setVisible(false);
-                labwhere.setVisible(false);
-                blankDisplay();
-                break;
-            case "run":
-                repetitions.setVisible(true);
-                labrepetitions.setVisible(true);
-                recovery.setVisible(true);
-                labrecovery.setVisible(true);
                 terrain.setVisible(false);
                 labterrain.setVisible(false);
                 tempo.setVisible(false);
                 labtempo.setVisible(false);
-                where.setVisible(false);
-                labwhere.setVisible(false);
                 blankDisplay();
                 break;
+
             case "swim":
                 where.setVisible(true);
                 labwhere.setVisible(true);
@@ -342,7 +325,34 @@ public class TrainingRecordGUI extends JFrame implements ActionListener {
                 labtempo.setVisible(false);
                 blankDisplay();
                 break;
-            case "generic":
+
+            case "run":
+                where.setVisible(false);
+                labwhere.setVisible(false);
+                repetitions.setVisible(true);
+                labrepetitions.setVisible(true);
+                recovery.setVisible(true);
+                labrecovery.setVisible(true);
+                terrain.setVisible(false);
+                labterrain.setVisible(false);
+                tempo.setVisible(false);
+                labtempo.setVisible(false);
+
+                blankDisplay();
+                break;
+
+            case "cycle":
+                where.setVisible(false);
+                labwhere.setVisible(false);
+                repetitions.setVisible(false);
+                labrepetitions.setVisible(false);
+                recovery.setVisible(false);
+                labrecovery.setVisible(false);
+                terrain.setVisible(true);
+                labterrain.setVisible(true);
+                tempo.setVisible(true);
+                labtempo.setVisible(true);
+
                 blankDisplay();
                 break;
         }

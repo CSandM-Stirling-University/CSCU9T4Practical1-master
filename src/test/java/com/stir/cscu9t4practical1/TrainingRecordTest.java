@@ -22,11 +22,11 @@ public class TrainingRecordTest {
     }
     
     @BeforeAll
-    public void setUpClass() {
+    public static void setUpClass() {
     }
     
     @AfterAll
-    public void tearDownClass() {
+    public static void tearDownClass() {
     }
     
     @BeforeEach
@@ -124,23 +124,25 @@ public class TrainingRecordTest {
     @Test
     public void testLookupEntries() {
         System.out.println("lookupEntries");
-        String expectResultsNone = "Sorry couldn't find anything for this date";
-        String expectResults = "Alice ran 3.0 km in 0:16:7 on 1/2/2003\n" + 
-                                "Bob ran 3.0 km in 0:14:15 on 1/2/2003\n";
+        String expectResultsNone = "No entries found";
+        String expectResults = "Alice trained 3.0 km in 0:16:7 on 1/2/2003\n" +
+                                "Bob trained 3.0 km in 0:14:15 on 1/2/2003\n";
         TrainingRecord instance = new TrainingRecord();
         Entry a = new Entry("Alice", 1, 2, 2003, 0, 16, 7, 3);
         Entry b = new Entry("Bob", 1, 2, 2003, 0, 14, 15, 3);
         instance.addEntry(a);
         instance.addEntry(b);
-        fail("This method cannot be tested as it does not exist yet");
+        //fail("This method cannot be tested as it does not exist yet");
         int d = 1;
         int m = 2;
         int y = 2003;
         // un-comment the lines below when you've implemented the method
-//        String resultSuccess = instance.lookupEntries(d,m,y);
-//        String resultNone = instance.lookupEntries(d,m,1999);
-//        assertEquals(expectResultsNone,resultNone);
-//        assertEquals(expectResults,resultSuccess);
+        String resultSuccess = instance.findAllByDate(d,m,y);
+        String resultNone = instance.findAllByDate(d,m,1999);
+        System.out.println(resultSuccess);
+        System.out.println(resultNone);
+        assertEquals(expectResultsNone,resultNone);
+        assertEquals(expectResults,resultSuccess);
     }
     
 }

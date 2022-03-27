@@ -21,11 +21,32 @@ public class TrainingRecord {
         String result = "No entries found";
         while (iter.hasNext()) {
             Entry current = iter.next();
-            //if (current.getClass() == SwimEntry.class) {
-              //  result = ((SwimEntry) current).getSwimEntry();
-            //}
-            if (current.getDay() == d && current.getMonth() == m && current.getYear() == y)
-                result = current.getEntry();
+            // swim
+            if (current.getClass() == SwimEntry.class) {
+                if (current.getDay() == d && current.getMonth() == m && current.getYear() == y) {
+                    result = ((SwimEntry) current).getSwimEntry();
+                    break;
+                }
+            }
+            // sprint
+            if (current.getClass() == SprintEntry.class) {
+                if (current.getDay() == d && current.getMonth() == m && current.getYear() == y) {
+                    result = ((SprintEntry) current).getSprintEntry();
+                    break;
+                }
+            }
+            // cycle
+            if (current.getClass() == CycleEntry.class) {
+                if (current.getDay() == d && current.getMonth() == m && current.getYear() == y) {
+                    result = ((CycleEntry) current).getCycleEntry();
+                    break;
+                }
+            }
+            // generic training
+            if (current.getClass() == Entry.class) {
+                if (current.getDay() == d && current.getMonth() == m && current.getYear() == y)
+                    result = current.getEntry();
+            }
         }
         return result;
     } // lookupEntry
@@ -38,9 +59,22 @@ public class TrainingRecord {
         }
         while (iter.hasNext()) {
             Entry current = iter.next();
+            System.out.println(current);
             if (current.getDay() == d && current.getMonth() == m && current.getYear() == y) {
-                result = result + current.getEntry();
-            } else {
+                if (current.getClass() == Entry.class) {
+                    result = result + current.getEntry();
+                }
+                if (current.getClass() == SwimEntry.class) {
+                    result = result + ((SwimEntry) current).getSwimEntry();
+                }
+                if (current.getClass() == SprintEntry.class) {
+                    result = result + ((SprintEntry) current).getSprintEntry();
+                }
+                if (current.getClass() == CycleEntry.class) {
+                    result = result + ((CycleEntry) current).getCycleEntry();
+                }
+            }
+            else {
                 result = "No entries found";
             }
         }
@@ -57,7 +91,6 @@ public class TrainingRecord {
             }
         }
     }
-
 
     // Count the number of entries
     public int getNumberOfEntries() {
